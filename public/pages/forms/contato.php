@@ -6,7 +6,7 @@
   if(isEmpty()){
         flash('message', 'Preencha todos os campos');
 
-        header("location:/?page=contato");
+        return redirect("contato");
     }
 
     $validate = validate([
@@ -16,5 +16,15 @@
         'message' => 's',
     ]);
 
-  dd($validate->email);
+    $data = [
+      'quem' => $validate->email,
+      'para' => 'celino3x@gmail.com',
+      'mensagem' => $validate->message,
+      'assunto' => $validate->subject,
+    ];
+
+  if(send($data)){
+    flash('message', 'Email Enviado com sucesso', 'success');
+    return redirect("contato");
+  }
 
